@@ -1,0 +1,25 @@
+ANALYSIS
+...
+Using a stack would retrieve the TraceState Objects from
+with the longest path, until reaching those with the shortest path
+A queue on the other hand, would start at the shortest path and 
+end with the longest TraceStates being evaluated.
+
+ The amount of possible paths isn't affected by
+ the choice of storage since each stack trace will
+ always be evaluated and the location of objects on
+ the board will not change.
+ 
+ The runtime for the brute search is O(n).
+ The amount of memory use will stay the same since they are
+ both linked list implementations.
+ 
+ Both structures should average the same time to find a 
+ solution. If the solution path is short, compared to
+ the length of the board, the queue will be faster,
+ otherwise the stack will be quicker.
+ 
+ Using a queue guarantees the first solution will be 
+ a shortest path since it evaluates shortest to longest
+ paths.
+...
