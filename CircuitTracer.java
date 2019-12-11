@@ -44,15 +44,152 @@ public class CircuitTracer {
 		TraceState initialState = new TraceState(board, board.getStartingPoint().x, board.getEndingPoint().y);
 		
 		TraceState previousState = initialState;
-		if(board.isOpen(previousState.getRow()+1,previousState.getCol())) //PROBABLY NEED TO CHECK LEFT AS WELL
+		if(previousState.getBoard().numRows() == previousState.getRow() && previousState.getBoard().numCols() == previousState.getCol()) // TOP RIGHT CORNER
 		{
-			TraceState horizontalTrace = new TraceState(previousState,previousState.getRow()+1,previousState.getCol());
-			stateStore.store(horizontalTrace);
+			if(board.isOpen(previousState.getRow()+1,previousState.getCol())) //PROBABLY NEED TO CHECK LEFT AS WELL
+			{
+				TraceState horizontalTrace = new TraceState(previousState,previousState.getRow()+1,previousState.getCol());
+				stateStore.store(horizontalTrace);
+			}
+			if(board.isOpen(previousState.getRow(), previousState.getCol()-1)) //PROBABLY NEED TO CHECK DOWN AS WELL
+			{
+				TraceState verticalTrace = new TraceState(previousState,previousState.getRow(), previousState.getCol()-1);
+				stateStore.store(verticalTrace);
+			}
 		}
-		if(board.isOpen(previousState.getRow(), previousState.getCol()+1)) //PROBABLY NEED TO CHECK DOWN AS WELL
+		else if(0 == previousState.getRow() && 0 == previousState.getCol()) // Upper left corner
 		{
-			TraceState verticalTrace = new TraceState(previousState,previousState.getRow(), previousState.getCol()+1);
-			stateStore.store(verticalTrace);
+			if(board.isOpen(previousState.getRow()+1,previousState.getCol())) //PROBABLY NEED TO CHECK LEFT AS WELL
+			{
+				TraceState horizontalTrace = new TraceState(previousState,previousState.getRow()+1,previousState.getCol());
+				stateStore.store(horizontalTrace);
+			}
+			if(board.isOpen(previousState.getRow(), previousState.getCol()+1)) //PROBABLY NEED TO CHECK DOWN AS WELL
+			{
+				TraceState verticalTrace = new TraceState(previousState,previousState.getRow(), previousState.getCol()+1);
+				stateStore.store(verticalTrace);
+			}
+		}
+		else if(previousState.getBoard().numRows() == previousState.getRow() && 0 == previousState.getCol()) // Bottom left corner
+		{
+			if(board.isOpen(previousState.getRow()-1,previousState.getCol())) //PROBABLY NEED TO CHECK LEFT AS WELL
+			{
+				TraceState horizontalTrace = new TraceState(previousState,previousState.getRow()-1,previousState.getCol());
+				stateStore.store(horizontalTrace);
+			}
+			if(board.isOpen(previousState.getRow(), previousState.getCol()+1)) //PROBABLY NEED TO CHECK DOWN AS WELL
+			{
+				TraceState verticalTrace = new TraceState(previousState,previousState.getRow(), previousState.getCol()+1);
+				stateStore.store(verticalTrace);
+			}
+		}
+		else if(previousState.getBoard().numRows() == previousState.getRow() && 0 == previousState.getCol()) // Bottom right corner
+		{
+			if(board.isOpen(previousState.getRow()-1,previousState.getCol())) //PROBABLY NEED TO CHECK LEFT AS WELL
+			{
+				TraceState horizontalTrace = new TraceState(previousState,previousState.getRow()-1,previousState.getCol());
+				stateStore.store(horizontalTrace);
+			}
+			if(board.isOpen(previousState.getRow(), previousState.getCol()-1)) //PROBABLY NEED TO CHECK DOWN AS WELL
+			{
+				TraceState verticalTrace = new TraceState(previousState,previousState.getRow(), previousState.getCol()-1);
+				stateStore.store(verticalTrace);
+			}
+		}
+		else if(previousState.getRow() == 0) // Top row (Not corner)
+		{
+			if(board.isOpen(previousState.getRow(), previousState.getCol()-1)) //PROBABLY NEED TO CHECK DOWN AS WELL
+			{
+				TraceState verticalTrace = new TraceState(previousState,previousState.getRow(), previousState.getCol()-1);
+				stateStore.store(verticalTrace);
+			}
+			if(board.isOpen(previousState.getRow(), previousState.getCol()+1)) //PROBABLY NEED TO CHECK DOWN AS WELL
+			{
+				TraceState verticalTrace = new TraceState(previousState,previousState.getRow(), previousState.getCol()+1);
+				stateStore.store(verticalTrace);
+			}
+			if(board.isOpen(previousState.getRow()+1,previousState.getCol())) //PROBABLY NEED TO CHECK LEFT AS WELL
+			{
+				TraceState horizontalTrace = new TraceState(previousState,previousState.getRow()+1,previousState.getCol());
+				stateStore.store(horizontalTrace);
+			}
+		}
+		else if(previousState.getCol() == 0) // Left Side (Not corner)
+		{
+			if(board.isOpen(previousState.getRow()-1,previousState.getCol())) //PROBABLY NEED TO CHECK LEFT AS WELL
+			{
+				TraceState horizontalTrace = new TraceState(previousState,previousState.getRow()-1,previousState.getCol());
+				stateStore.store(horizontalTrace);
+			}
+			if(board.isOpen(previousState.getRow(), previousState.getCol()+1)) //PROBABLY NEED TO CHECK DOWN AS WELL
+			{
+				TraceState verticalTrace = new TraceState(previousState,previousState.getRow(), previousState.getCol()+1);
+				stateStore.store(verticalTrace);
+			}
+			if(board.isOpen(previousState.getRow()+1,previousState.getCol())) //PROBABLY NEED TO CHECK LEFT AS WELL
+			{
+				TraceState horizontalTrace = new TraceState(previousState,previousState.getRow()+1,previousState.getCol());
+				stateStore.store(horizontalTrace);
+			}
+		}
+		else if(previousState.getCol() == previousState.getBoard().numCols()) // right side (Not corner)
+		{
+			if(board.isOpen(previousState.getRow()-1,previousState.getCol())) //PROBABLY NEED TO CHECK LEFT AS WELL
+			{
+				TraceState horizontalTrace = new TraceState(previousState,previousState.getRow()-1,previousState.getCol());
+				stateStore.store(horizontalTrace);
+			}
+			if(board.isOpen(previousState.getRow(), previousState.getCol()-1)) //PROBABLY NEED TO CHECK DOWN AS WELL
+			{
+				TraceState verticalTrace = new TraceState(previousState,previousState.getRow(), previousState.getCol()-1);
+				stateStore.store(verticalTrace);
+			}
+			if(board.isOpen(previousState.getRow()+1,previousState.getCol())) //PROBABLY NEED TO CHECK LEFT AS WELL
+			{
+				TraceState horizontalTrace = new TraceState(previousState,previousState.getRow()+1,previousState.getCol());
+				stateStore.store(horizontalTrace);
+			}
+		}
+		else if(previousState.getBoard().numRows() == previousState.getRow()) // bottom side
+		{
+			if(board.isOpen(previousState.getRow(), previousState.getCol()-1)) //PROBABLY NEED TO CHECK DOWN AS WELL
+			{
+				TraceState verticalTrace = new TraceState(previousState,previousState.getRow(), previousState.getCol()-1);
+				stateStore.store(verticalTrace);
+			}
+			if(board.isOpen(previousState.getRow()-1,previousState.getCol())) //PROBABLY NEED TO CHECK LEFT AS WELL
+			{
+				TraceState horizontalTrace = new TraceState(previousState,previousState.getRow()-1,previousState.getCol());
+				stateStore.store(horizontalTrace);
+			}
+			if(board.isOpen(previousState.getRow(), previousState.getCol()+1)) //PROBABLY NEED TO CHECK DOWN AS WELL
+			{
+				TraceState verticalTrace = new TraceState(previousState,previousState.getRow(), previousState.getCol()+1);
+				stateStore.store(verticalTrace);
+			}
+		}
+		else // not near an edge
+		{
+			if(board.isOpen(previousState.getRow(), previousState.getCol()+1)) //PROBABLY NEED TO CHECK DOWN AS WELL
+			{
+				TraceState verticalTrace = new TraceState(previousState,previousState.getRow(), previousState.getCol()+1);
+				stateStore.store(verticalTrace);
+			}
+			if(board.isOpen(previousState.getRow()-1,previousState.getCol())) //PROBABLY NEED TO CHECK LEFT AS WELL
+			{
+				TraceState horizontalTrace = new TraceState(previousState,previousState.getRow()-1,previousState.getCol());
+				stateStore.store(horizontalTrace);
+			}
+			if(board.isOpen(previousState.getRow(), previousState.getCol()-1)) //PROBABLY NEED TO CHECK DOWN AS WELL
+			{
+				TraceState verticalTrace = new TraceState(previousState,previousState.getRow(), previousState.getCol()-1);
+				stateStore.store(verticalTrace);
+			}
+			if(board.isOpen(previousState.getRow()+1,previousState.getCol())) //PROBABLY NEED TO CHECK LEFT AS WELL
+			{
+				TraceState horizontalTrace = new TraceState(previousState,previousState.getRow()+1,previousState.getCol());
+				stateStore.store(horizontalTrace);
+			}
 		}
 		while(!stateStore.isEmpty())
 		{
@@ -75,15 +212,152 @@ public class CircuitTracer {
 			}
 			else
 			{
-				if(board.isOpen(current.getRow()+1,current.getCol())) //PROBABLY NEED TO CHECK LEFT AS WELL (ALSO CHECK IF OUT OF BOUNDS)
+				if(current.getBoard().numRows() == current.getRow() && current.getBoard().numCols() == current.getCol()) // TOP RIGHT CORNER
 				{
-					TraceState horizontalTrace = new TraceState(current,current.getRow()+1,current.getCol());
-					stateStore.store(horizontalTrace);
+					if(board.isOpen(current.getRow()+1,current.getCol())) //PROBABLY NEED TO CHECK LEFT AS WELL
+					{
+						TraceState horizontalTrace = new TraceState(current,current.getRow()+1,current.getCol());
+						stateStore.store(horizontalTrace);
+					}
+					if(board.isOpen(current.getRow(),current.getCol()-1)) //PROBABLY NEED TO CHECK DOWN AS WELL
+					{
+						TraceState verticalTrace = new TraceState(current,current.getRow(), current.getCol()-1);
+						stateStore.store(verticalTrace);
+					}
 				}
-				if(board.isOpen(current.getRow(), current.getCol()+1)) //PROBABLY NEED TO CHECK DOWN AS WELL
+				else if(0 == current.getRow() && 0 == current.getCol()) // Upper left corner
 				{
-					TraceState verticalTrace = new TraceState(current,current.getRow(), current.getCol()+1);
-					stateStore.store(verticalTrace);
+					if(board.isOpen(current.getRow()+1,current.getCol())) //PROBABLY NEED TO CHECK LEFT AS WELL
+					{
+						TraceState horizontalTrace = new TraceState(current,current.getRow()+1,current.getCol());
+						stateStore.store(horizontalTrace);
+					}
+					if(board.isOpen(current.getRow(), current.getCol()+1)) //PROBABLY NEED TO CHECK DOWN AS WELL
+					{
+						TraceState verticalTrace = new TraceState(current,current.getRow(), current.getCol()+1);
+						stateStore.store(verticalTrace);
+					}
+				}
+				else if(current.getBoard().numRows() == current.getRow() && 0 == current.getCol()) // Bottom left corner
+				{
+					if(board.isOpen(current.getRow()-1,current.getCol())) //PROBABLY NEED TO CHECK LEFT AS WELL
+					{
+						TraceState horizontalTrace = new TraceState(current,current.getRow()-1,current.getCol());
+						stateStore.store(horizontalTrace);
+					}
+					if(board.isOpen(current.getRow(), current.getCol()+1)) //PROBABLY NEED TO CHECK DOWN AS WELL
+					{
+						TraceState verticalTrace = new TraceState(current,current.getRow(), current.getCol()+1);
+						stateStore.store(verticalTrace);
+					}
+				}
+				else if(current.getBoard().numRows() ==current.getRow() && 0 == current.getCol()) // Bottom right corner
+				{
+					if(board.isOpen(current.getRow()-1,current.getCol())) //PROBABLY NEED TO CHECK LEFT AS WELL
+					{
+						TraceState horizontalTrace = new TraceState(current,current.getRow()-1,current.getCol());
+						stateStore.store(horizontalTrace);
+					}
+					if(board.isOpen(current.getRow(), current.getCol()-1)) //PROBABLY NEED TO CHECK DOWN AS WELL
+					{
+						TraceState verticalTrace = new TraceState(current,current.getRow(), current.getCol()-1);
+						stateStore.store(verticalTrace);
+					}
+				}
+				else if(current.getRow() == 0) // Top row (Not corner)
+				{
+					if(board.isOpen(current.getRow(), current.getCol()-1)) //PROBABLY NEED TO CHECK DOWN AS WELL
+					{
+						TraceState verticalTrace = new TraceState(current,current.getRow(), current.getCol()-1);
+						stateStore.store(verticalTrace);
+					}
+					if(board.isOpen(current.getRow(), current.getCol()+1)) //PROBABLY NEED TO CHECK DOWN AS WELL
+					{
+						TraceState verticalTrace = new TraceState(current,current.getRow(), current.getCol()+1);
+						stateStore.store(verticalTrace);
+					}
+					if(board.isOpen(current.getRow()+1,current.getCol())) //PROBABLY NEED TO CHECK LEFT AS WELL
+					{
+						TraceState horizontalTrace = new TraceState(current,current.getRow()+1,current.getCol());
+						stateStore.store(horizontalTrace);
+					}
+				}
+				else if(current.getCol() == 0) // Left Side (Not corner)
+				{
+					if(board.isOpen(current.getRow()-1,current.getCol())) //PROBABLY NEED TO CHECK LEFT AS WELL
+					{
+						TraceState horizontalTrace = new TraceState(current,current.getRow()-1,current.getCol());
+						stateStore.store(horizontalTrace);
+					}
+					if(board.isOpen(current.getRow(), current.getCol()+1)) //PROBABLY NEED TO CHECK DOWN AS WELL
+					{
+						TraceState verticalTrace = new TraceState(current,current.getRow(), current.getCol()+1);
+						stateStore.store(verticalTrace);
+					}
+					if(board.isOpen(current.getRow()+1,current.getCol())) //PROBABLY NEED TO CHECK LEFT AS WELL
+					{
+						TraceState horizontalTrace = new TraceState(current,current.getRow()+1,current.getCol());
+						stateStore.store(horizontalTrace);
+					}
+				}
+				else if(current.getCol() == current.getBoard().numCols()) // right side (Not corner)
+				{
+					if(board.isOpen(current.getRow()-1,current.getCol())) //PROBABLY NEED TO CHECK LEFT AS WELL
+					{
+						TraceState horizontalTrace = new TraceState(current,current.getRow()-1,current.getCol());
+						stateStore.store(horizontalTrace);
+					}
+					if(board.isOpen(current.getRow(), current.getCol()-1)) //PROBABLY NEED TO CHECK DOWN AS WELL
+					{
+						TraceState verticalTrace = new TraceState(current,current.getRow(), current.getCol()-1);
+						stateStore.store(verticalTrace);
+					}
+					if(board.isOpen(current.getRow()+1,current.getCol())) //PROBABLY NEED TO CHECK LEFT AS WELL
+					{
+						TraceState horizontalTrace = new TraceState(current,current.getRow()+1,current.getCol());
+						stateStore.store(horizontalTrace);
+					}
+				}
+				else if(current.getBoard().numRows() == current.getRow()) // bottom side
+				{
+					if(board.isOpen(current.getRow(), current.getCol()-1)) //PROBABLY NEED TO CHECK DOWN AS WELL
+					{
+						TraceState verticalTrace = new TraceState(current,current.getRow(), current.getCol()-1);
+						stateStore.store(verticalTrace);
+					}
+					if(board.isOpen(current.getRow()-1,current.getCol())) //PROBABLY NEED TO CHECK LEFT AS WELL
+					{
+						TraceState horizontalTrace = new TraceState(current,current.getRow()-1,current.getCol());
+						stateStore.store(horizontalTrace);
+					}
+					if(board.isOpen(current.getRow(), current.getCol()+1)) //PROBABLY NEED TO CHECK DOWN AS WELL
+					{
+						TraceState verticalTrace = new TraceState(current,current.getRow(), current.getCol()+1);
+						stateStore.store(verticalTrace);
+					}
+				}
+				else // not near an edge
+				{
+					if(board.isOpen(current.getRow(), current.getCol()+1)) //PROBABLY NEED TO CHECK DOWN AS WELL
+					{
+						TraceState verticalTrace = new TraceState(current,current.getRow(), current.getCol()+1);
+						stateStore.store(verticalTrace);
+					}
+					if(board.isOpen(current.getRow()-1,current.getCol())) //PROBABLY NEED TO CHECK LEFT AS WELL
+					{
+						TraceState horizontalTrace = new TraceState(current,current.getRow()-1,current.getCol());
+						stateStore.store(horizontalTrace);
+					}
+					if(board.isOpen(current.getRow(), current.getCol()-1)) //PROBABLY NEED TO CHECK DOWN AS WELL
+					{
+						TraceState verticalTrace = new TraceState(current,current.getRow(), current.getCol()-1);
+						stateStore.store(verticalTrace);
+					}
+					if(board.isOpen(current.getRow()+1,current.getCol())) //PROBABLY NEED TO CHECK LEFT AS WELL
+					{
+						TraceState horizontalTrace = new TraceState(current,current.getRow()+1,current.getCol());
+						stateStore.store(horizontalTrace);
+					}
 				}
 			}
 		}
