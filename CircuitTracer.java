@@ -37,6 +37,8 @@ public class CircuitTracer {
 	private static void printUsage() {
 		//TODO: print out clear usage instructions when there are problems with
 		// any command line args
+		System.out.println("This program expects three command-line arguments, in the following order:"
+				+ "\n -q for storing as a queue, -c for console output, and the input file name.");
 	}
 	private void search(Storage<TraceState> stateStore, CircuitBoard board)
 	{
@@ -377,7 +379,7 @@ public class CircuitTracer {
 		}
 		else if(args[0] == "q")
 		{
-			Storage<TraceState> stateStore =Storage.getQueueInstance();
+			Storage<TraceState> stateStore = Storage.getQueueInstance();
 			try {
 			CircuitBoard board = new CircuitBoard(args[3]);
 			search(stateStore, board);

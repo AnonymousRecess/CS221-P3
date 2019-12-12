@@ -44,7 +44,8 @@ public class CircuitBoard {
 	 */
 	public CircuitBoard(String filename) throws FileNotFoundException, InvalidFileFormatException {
 		Scanner fileScan;
-		
+		int oneCounter = 0;
+		int twoCounter = 0;
 		 fileScan = new Scanner(new File(filename));
 		
 		//TODO: parse the given file to populate the char[][]
@@ -53,7 +54,9 @@ public class CircuitBoard {
 		
 		
 		ROWS = fileScan.nextInt();
+		
 		COLS = fileScan.nextInt();
+		
 		
 		while(fileScan.hasNext())
 		{
@@ -66,6 +69,32 @@ public class CircuitBoard {
 				for(int j = 0; j< COLS; j++)
 				{
 					char a =(fileScan.next().charAt(0)); 
+					for (int s = 0; i < ALLOWED_CHARS.length()-1; s++)
+					{
+						if(s != ALLOWED_CHARS.charAt(s))
+						{
+							fileScan.close();
+							throw new InvalidFileFormatException("Unexpected character encountered in file");
+						}
+					}
+					if(a == START)
+					{
+						oneCounter ++;
+						if(oneCounter >1)
+						{
+							fileScan.close();
+							throw new InvalidFileFormatException("Cannot have multiple starting components on one board");
+						}
+					}
+					if(a == END) 
+					{
+						twoCounter ++;
+						if(twoCounter > 1)
+						{
+							fileScan.close();
+							throw new InvalidFileFormatException("Cannot have multiple ending components on one board");
+						}
+					}
 					board[i][j] = a;
 				}
 			
