@@ -63,23 +63,31 @@ public class CircuitBoard {
 			
 			board = new char[ROWS][COLS];
 					
-		   
+		 
 		   for(int i = 0; i< ROWS; i++)
 			{
 				for(int j = 0; j< COLS; j++)
 				{
+					boolean illegal = true;
+					int s = 0;
 					char a =(fileScan.next().charAt(0)); 
-					for (int s = 0; i < ALLOWED_CHARS.length()-1; s++)
+					while(s <= ALLOWED_CHARS.length() && illegal == true )
 					{
-						if(s != ALLOWED_CHARS.charAt(s))
+						if( a == ALLOWED_CHARS.charAt(s))
 						{
-							fileScan.close();
-							throw new InvalidFileFormatException("Unexpected character encountered in file");
+							illegal = false;
 						}
+						s++;
+					}
+					if(illegal)
+					{
+						fileScan.close();
+						throw new InvalidFileFormatException("Unexpected character encountered in file");
 					}
 					if(a == START)
 					{
 						oneCounter ++;
+						startingPoint = new Point (i,j);
 						if(oneCounter >1)
 						{
 							fileScan.close();
@@ -88,6 +96,7 @@ public class CircuitBoard {
 					}
 					if(a == END) 
 					{
+						endingPoint = new Point (i,j);
 						twoCounter ++;
 						if(twoCounter > 1)
 						{
