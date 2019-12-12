@@ -37,33 +37,45 @@ public class CircuitTracer {
 	private static void printUsage() {
 		//TODO: print out clear usage instructions when there are problems with
 		// any command line args
+		System.out.println("This program expects three command-line arguments, in the following order:"
+				+ "\n -q for storing as a queue, -c for console output, and the input file name.");
 	}
 	private void search(Storage<TraceState> stateStore, CircuitBoard board)
 	{
+		int startingRow = board.getStartingPoint().x;
+		int startingCol = board.getStartingPoint().y;
 		
-		TraceState initialState = new TraceState(board, board.getStartingPoint().x, board.getEndingPoint().y);
-		
-		TraceState previousState = initialState;
-		if(board.isOpen(previousState.getRow()+1,previousState.getCol())) //PROBABLY NEED TO CHECK LEFT AS WELL
-		{
-			TraceState horizontalTrace = new TraceState(previousState,previousState.getRow()+1,previousState.getCol());
-			stateStore.store(horizontalTrace);
-		}
-		if(board.isOpen(previousState.getRow(), previousState.getCol()+1)) //PROBABLY NEED TO CHECK DOWN AS WELL
-		{
-			TraceState verticalTrace = new TraceState(previousState,previousState.getRow(), previousState.getCol()+1);
-			stateStore.store(verticalTrace);
-		}
+			if(board.isOpen(startingRow+1,startingCol)) //PROBABLY NEED TO CHECK LEFT AS WELL
+			{
+				TraceState initialState = new TraceState(board, startingRow+1, startingCol);
+				stateStore.store(initialState);
+			}
+			if(board.isOpen(startingRow,startingCol-1)) //PROBABLY NEED TO CHECK DOWN AS WELL
+			{
+				TraceState verticalTrace = new TraceState(board,startingRow, startingCol-1);
+				stateStore.store(verticalTrace);
+			}
+			if(board.isOpen(startingRow, startingCol+1)) //PROBABLY NEED TO CHECK DOWN AS WELL
+			{
+				TraceState verticalTrace = new TraceState(board,startingRow, startingCol+1);
+				stateStore.store(verticalTrace);
+			}
+			if(board.isOpen(startingRow-1,startingCol)) //PROBABLY NEED TO CHECK LEFT AS WELL
+			{
+				TraceState horizontalTrace = new TraceState(board,startingRow-1,startingCol);
+				stateStore.store(horizontalTrace);
+			}
+		int pathMin = 0;
 		while(!stateStore.isEmpty())
 		{
-			int pathMin = 0;
+			
 			TraceState current = stateStore.retrieve();
 			if(bestPaths.isEmpty() && current.isComplete())
 			{
 				pathMin = current.pathLength();
 				bestPaths.add(current);
 			}
-			if(current.isComplete() && current.pathLength() == pathMin)
+			else if(current.isComplete() && current.pathLength() == pathMin)
 			{
 				bestPaths.add(current);
 			}
@@ -75,14 +87,26 @@ public class CircuitTracer {
 			}
 			else
 			{
-				if(board.isOpen(current.getRow()+1,current.getCol())) //PROBABLY NEED TO CHECK LEFT AS WELL (ALSO CHECK IF OUT OF BOUNDS)
+				int currentRow = current.getRow();
+				int currentCol = current.getCol();
+				if(current.isOpen(currentRow, currentCol+1)) //PROBABLY NEED TO CHECK DOWN AS WELL
 				{
-					TraceState horizontalTrace = new TraceState(current,current.getRow()+1,current.getCol());
-					stateStore.store(horizontalTrace);
+					TraceState verticalTrace = new TraceState(current,currentRow, currentCol+1);
+					stateStore.store(verticalTrace);
 				}
-				if(board.isOpen(current.getRow(), current.getCol()+1)) //PROBABLY NEED TO CHECK DOWN AS WELL
+				if(current.isOpen(currentRow, currentCol-1)) //PROBABLY NEED TO CHECK DOWN AS WELL
 				{
-					TraceState verticalTrace = new TraceState(current,current.getRow(), current.getCol()+1);
+					TraceState verticalTrace = new TraceState(current,currentRow, currentCol-1);
+					stateStore.store(verticalTrace);
+				}
+				if(current.isOpen(currentRow+1, currentCol)) //PROBABLY NEED TO CHECK DOWN AS WELL
+				{
+					TraceState verticalTrace = new TraceState(current,currentRow+1, currentCol);
+					stateStore.store(verticalTrace);
+				}
+				if(current.isOpen(currentRow-1, currentCol)) //PROBABLY NEED TO CHECK DOWN AS WELL
+				{
+					TraceState verticalTrace = new TraceState(current,currentRow-1, currentCol);
 					stateStore.store(verticalTrace);
 				}
 			}
@@ -97,15 +121,15 @@ public class CircuitTracer {
 	private CircuitTracer(String[] args) {
 		//TODO: parse command line args
 		
-		if(args[0].toLowerCase() == "s")
+		if(args[0].contains("s"))
 		{
 			System.out.println("Implemented Using a Queue");
 		}
-		else if(args[0] == "q")
+		else if(args[0].contains("q"))
 		{
-			Storage<TraceState> stateStore =Storage.getQueueInstance();
+			Storage<TraceState> stateStore = Storage.getQueueInstance();
 			try {
-			CircuitBoard board = new CircuitBoard(args[3]);
+			CircuitBoard board = new CircuitBoard(args[2]);
 			search(stateStore, board);
 			}
 			catch (FileNotFoundException e)
@@ -116,14 +140,14 @@ public class CircuitTracer {
 			{
 				System.out.println(e);
 			}
-			if(args[1].toLowerCase() == "c")
+			if(args[1].contains("c"))
 			{
 				for(TraceState states: bestPaths)
 				{
 					System.out.println(states);
 				}
 			}
-			if(args[1].toLowerCase() == "g")
+			else if(args[1].equals("g"))
 			{
 				System.out.println("GUI mode not implemented");
 			}

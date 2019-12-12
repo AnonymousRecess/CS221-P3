@@ -44,7 +44,8 @@ public class CircuitBoard {
 	 */
 	public CircuitBoard(String filename) throws FileNotFoundException, InvalidFileFormatException {
 		Scanner fileScan;
-		
+		int oneCounter = 0;
+		int twoCounter = 0;
 		 fileScan = new Scanner(new File(filename));
 		
 		//TODO: parse the given file to populate the char[][]
@@ -53,19 +54,66 @@ public class CircuitBoard {
 		
 		
 		ROWS = fileScan.nextInt();
+		
 		COLS = fileScan.nextInt();
+		
 		
 		while(fileScan.hasNext())
 		{
 			
 			board = new char[ROWS][COLS];
 					
-		   
+		 
 		   for(int i = 0; i< ROWS; i++)
 			{
 				for(int j = 0; j< COLS; j++)
 				{
+					boolean illegal = true;
+					int s = 0;
 					char a =(fileScan.next().charAt(0)); 
+					while(s <= ALLOWED_CHARS.length() && illegal == true )
+					{
+						if( a == ALLOWED_CHARS.charAt(s))
+						{
+							illegal = false;
+						}
+						s++;
+					}
+					if(illegal)
+					{
+						fileScan.close();
+						throw new InvalidFileFormatException("Unexpected character encountered in file");
+					}
+					if(a == START)
+					{
+						oneCounter ++;
+						startingPoint = new Point (i,j);
+						if(oneCounter >1)
+						{
+							fileScan.close();
+							throw new InvalidFileFormatException("Cannot have multiple starting components on one board");
+						}
+						if(oneCounter < 1)
+						{
+							fileScan.close();
+							throw new InvalidFileFormatException("File must have a starting component");
+						}
+					}
+					if(a == END) 
+					{
+						endingPoint = new Point (i,j);
+						twoCounter ++;
+						if(twoCounter > 1)
+						{
+							fileScan.close();
+							throw new InvalidFileFormatException("Cannot have multiple ending components on one board");
+						}
+						if(twoCounter < 1)
+						{
+							fileScan.close();
+							throw new InvalidFileFormatException("File must have a ending component");
+						}
+					}
 					board[i][j] = a;
 				}
 			
