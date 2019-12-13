@@ -109,7 +109,7 @@ public class CircuitTracer {
 					TraceState verticalTrace = new TraceState(current,currentRow-1, currentCol);
 					stateStore.store(verticalTrace);
 				}
-			}
+			} 
 		}
 	}
 	/** 
@@ -123,7 +123,30 @@ public class CircuitTracer {
 		
 		if(args[0].contains("s"))
 		{
-			System.out.println("Implemented Using a Queue");
+			Storage<TraceState> stateStore = Storage.getStackInstance();
+			try {
+			CircuitBoard board = new CircuitBoard(args[2]);
+			search(stateStore, board);
+			}
+			catch (FileNotFoundException e)
+			{
+				System.out.println("Incorrect FilePath\n" + "e");
+			}
+			catch (InvalidFileFormatException e)
+			{
+				System.out.println(e);
+			}
+			if(args[1].contains("c"))
+			{
+				for(TraceState states: bestPaths)
+				{
+					System.out.println(states);
+				}
+			}
+			else if(args[1].equals("g"))
+			{
+				System.out.println("GUI mode not implemented");
+			}
 		}
 		else if(args[0].contains("q"))
 		{

@@ -1,0 +1,2 @@
+This program expects three command-line arguments, in the following order:
+ -q for storing as a queue, -c for console output, and the input file name.
