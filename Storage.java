@@ -70,7 +70,7 @@ public class Storage<T>
 			case queue:
 				queue.add(element);
 		}
-	}
+	} 
 	
 	/** Remove and return the next T from storage
 	 * @return next T from storage

@@ -1,5 +1,95 @@
-ANALYSIS
+# Project 3 Circuit Tracer
+****************
+* Class: CS 221-S3
+* Date: 12/10/2019
+* Author: Jeff Kahn
+**************** 
+
+## OVERVIEW:
+
+This program scans a file and populates a pseudo circuit board
+with components. Trace states are then constructed to find the 
+shortest paths from starting to ending component, which are then printed
+to the console.
+
+INCLUDED FILES:
+
+* CircuitTracer.java
 ...
+File that checks for open positions, generates new TraceStates, reads
+command line arguments, finds bestPaths and displays results to console.
+...
+* CircuitBoard.java
+...
+File that represents an instance of the circuit board with components stored
+in an array. Performs format checking of file input.
+...
+
+* Storage.java
+...
+Container for storing TraceStates. Specified as queue or stack 
+implementation per user request.
+...
+
+* TraceState.java
+...
+Potential path from starting component to ending component.
+...
+
+* REAMDE
+...
+This file.
+...
+
+## COMPILING AND RUNNING
+
+...
+Navigate to the directory that includes all source files.
+Compile by running the command:
+$ `javac *.java`
+
+Run the driver by typing:
+$ `java CircuitTracer [arg0] [arg1] [arg2]
+arg0 specifies queue (q) or stack (s), arg1 specifies console input (c) (GUI not implemented),
+arg2 specifies filename for the board.
+
+Best paths from component 1 to component 2 are displayed to console
+upon providing correct arguments.
+Usage information is displayed upon not entering correct parameters.
+
+## PROGRAM DESIGN AND IMPORTANT CONCEPTS:
+...
+
+### ORGANIZATION
+This program was designed under the scenario that discovering 
+the shortest path(s) between two positions was imperative. To
+that end, this program fabricates a pseudo circuit board (Represented by CircuitBoard.java) representing 
+various components with characters stored inside of a 2D array.
+The T character is inserted into open adjacent spaces to represent a 
+path(Represented by TraceState.java) from the starting component to the ending component. The new array
+is then stored into a stack/queue (Storage.java) and is later pulled out to be evaluated. The driver for
+these interactions is the CircuitTracer.java which acts as both user interface and facilitates storing and retrieving
+or TraceStates.
+
+### TESTING
+
+10 valid files and 12 invalid files were utilized as the primary means of testing the veracity of the 
+program. The valid files contained test cases of various different lengths, minimum paths and starting/ending locations.
+The invalid files utilized program built exception handling to display specific error messages about invalid characters,
+starting path/ending path errors, file opening errors and inaccurate row/col values.
+
+### DISCUSSION
+
+Utilizing a whiteboard to generate hypothetical TraceStates allowed for a greater understanding of what the project would
+entail before beginning to read/write any code. Following that step, I then read through each file that was provided. Unfortunately,
+as thorough as a reading may be, it is often that I find an elongated project completion time manifested from a misunderstanding 
+of what all capabilities I am provided with. In this instance, I did not realize that bounds checking was also provided by isOpen()
+and wasted quite a fair amount of time constructing my own. One of the discoveries I made during this project that helped me out
+immensely was the existence of run/debug configurations. This finding allowed me to troubleshoot and understand the interworkings of 
+the provided files much better.
+
+### ANALYSIS
+
 Using a stack would retrieve the TraceState Objects from
 with the longest path, until reaching those with the shortest path
 A queue on the other hand, would start at the shortest path and 
@@ -22,4 +112,3 @@ end with the longest TraceStates being evaluated.
  Using a queue guarantees the first solution will be 
  a shortest path since it evaluates shortest to longest
  paths.
-...

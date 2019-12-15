@@ -73,7 +73,7 @@ public class TraceState {
 		return adjacent(path.get(path.size()-1), board.getEndingPoint());
 	}
 	
-	/**
+	/** 
 	 * @param p1 first Point
 	 * @param p2 second Point
 	 * @return true if p1 and p2 are adjacent, else false

@@ -16,7 +16,7 @@ public class CircuitTracerTester {
 		FileNotFound, InvalidFileFormat, NoException, UnexpectedException,
 		MatchingContents, ValidOutput, InvalidOutput,
 		Fail
-	};
+	}; 
 	
 	//maximum seconds willing to wait for CircuitTracer to complete a search
 	private static final int TIMEOUT = 15;

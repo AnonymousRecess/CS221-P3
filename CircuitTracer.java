@@ -21,8 +21,8 @@ public class CircuitTracer {
 	 */
 	public static void main(String[] args) {
 		
-		if (args.length != 3) {
-			printUsage();
+		if (args.length != 3) { // expects 3 arguments
+			printUsage(); // message displaying use information
 			System.exit(1);
 		}
 		try {
@@ -35,81 +35,81 @@ public class CircuitTracer {
 
 	/** Print instructions for running CircuitTracer from the command line. */
 	private static void printUsage() {
-		//TODO: print out clear usage instructions when there are problems with
-		// any command line args
+		
+		
 		System.out.println("This program expects three command-line arguments, in the following order:"
 				+ "\n -q for storing as a queue, -c for console output, and the input file name.");
 	}
 	private void search(Storage<TraceState> stateStore, CircuitBoard board)
 	{
-		int startingRow = board.getStartingPoint().x;
-		int startingCol = board.getStartingPoint().y;
+		int startingRow = board.getStartingPoint().x; // position of starting component
+		int startingCol = board.getStartingPoint().y; // position of starting component
 		
-			if(board.isOpen(startingRow+1,startingCol)) //PROBABLY NEED TO CHECK LEFT AS WELL
+			if(board.isOpen(startingRow+1,startingCol)) // check if below component is open
 			{
 				TraceState initialState = new TraceState(board, startingRow+1, startingCol);
-				stateStore.store(initialState);
+				stateStore.store(initialState); // make and store trace if open
 			}
-			if(board.isOpen(startingRow,startingCol-1)) //PROBABLY NEED TO CHECK DOWN AS WELL
+			if(board.isOpen(startingRow,startingCol-1)) // check if left component is open
 			{
 				TraceState verticalTrace = new TraceState(board,startingRow, startingCol-1);
-				stateStore.store(verticalTrace);
+				stateStore.store(verticalTrace); // make and store trace if open
 			}
-			if(board.isOpen(startingRow, startingCol+1)) //PROBABLY NEED TO CHECK DOWN AS WELL
+			if(board.isOpen(startingRow, startingCol+1)) // check if right component is open
 			{
 				TraceState verticalTrace = new TraceState(board,startingRow, startingCol+1);
-				stateStore.store(verticalTrace);
+				stateStore.store(verticalTrace); // make and store trace if open
 			}
-			if(board.isOpen(startingRow-1,startingCol)) //PROBABLY NEED TO CHECK LEFT AS WELL
+			if(board.isOpen(startingRow-1,startingCol)) // check if above component is open
 			{
 				TraceState horizontalTrace = new TraceState(board,startingRow-1,startingCol);
-				stateStore.store(horizontalTrace);
+				stateStore.store(horizontalTrace); // make and store trace if open
 			}
-		int pathMin = 0;
+		int pathMin = 0; // int to keep track of minimum path length
 		while(!stateStore.isEmpty())
 		{
 			
-			TraceState current = stateStore.retrieve();
-			if(bestPaths.isEmpty() && current.isComplete())
+			TraceState current = stateStore.retrieve(); // retrieve traces while stateStore is not empty
+			if(bestPaths.isEmpty() && current.isComplete()) // if tracestate is complete and there is no best path, this is the new best path
 			{
-				pathMin = current.pathLength();
-				bestPaths.add(current);
+				pathMin = current.pathLength(); // set min to new trace length
+				bestPaths.add(current); // add to bestPath list
 			}
 			else if(current.isComplete() && current.pathLength() == pathMin)
 			{
-				bestPaths.add(current);
+				bestPaths.add(current); // if the path is the same length as current mid, add as an additional best path
 			}
 			else if(current.isComplete() && current.pathLength() < pathMin)
 			{
-				pathMin = current.pathLength();
+				pathMin = current.pathLength(); // clear bestpath if new minPath is found and add new tracestate to bestpath
 				bestPaths.clear();
 				bestPaths.add(current);
 			}
 			else
 			{
-				int currentRow = current.getRow();
-				int currentCol = current.getCol();
-				if(current.isOpen(currentRow, currentCol+1)) //PROBABLY NEED TO CHECK DOWN AS WELL
+				int currentRow = current.getRow(); // new position to check adjacent positions from
+				int currentCol = current.getCol(); // new position to check adjacent positions from
+				if(current.isOpen(currentRow, currentCol+1)) // check if right component is open
 				{
 					TraceState verticalTrace = new TraceState(current,currentRow, currentCol+1);
-					stateStore.store(verticalTrace);
+					stateStore.store(verticalTrace); // make and store trace if open
 				}
-				if(current.isOpen(currentRow, currentCol-1)) //PROBABLY NEED TO CHECK DOWN AS WELL
+				if(current.isOpen(currentRow, currentCol-1)) // check if left component is open
 				{
 					TraceState verticalTrace = new TraceState(current,currentRow, currentCol-1);
-					stateStore.store(verticalTrace);
+					stateStore.store(verticalTrace); // make and store trace if open
 				}
-				if(current.isOpen(currentRow+1, currentCol)) //PROBABLY NEED TO CHECK DOWN AS WELL
+				if(current.isOpen(currentRow+1, currentCol)) // check if below component is open
 				{
 					TraceState verticalTrace = new TraceState(current,currentRow+1, currentCol);
-					stateStore.store(verticalTrace);
+					stateStore.store(verticalTrace); // make and store trace if open
 				}
-				if(current.isOpen(currentRow-1, currentCol)) //PROBABLY NEED TO CHECK DOWN AS WELL
+				if(current.isOpen(currentRow-1, currentCol)) // check if above component is open
 				{
 					TraceState verticalTrace = new TraceState(current,currentRow-1, currentCol);
-					stateStore.store(verticalTrace);
+					stateStore.store(verticalTrace); // make and store trace if open
 				}
-			}
+			} 
 		}
 	}
 	/** 
@@ -119,18 +119,14 @@ public class CircuitTracer {
 	 * @param args command line arguments passed through from main()
 	 */
 	private CircuitTracer(String[] args) {
-		//TODO: parse command line args
+		
 		
 		if(args[0].contains("s"))
 		{
-			System.out.println("Implemented Using a Queue");
-		}
-		else if(args[0].contains("q"))
-		{
-			Storage<TraceState> stateStore = Storage.getQueueInstance();
+			Storage<TraceState> stateStore = Storage.getStackInstance(); // configure storage as a stack
 			try {
-			CircuitBoard board = new CircuitBoard(args[2]);
-			search(stateStore, board);
+			CircuitBoard board = new CircuitBoard(args[2]); // create a board with filename sent as a parameter
+			search(stateStore, board); // perform search
 			}
 			catch (FileNotFoundException e)
 			{
@@ -144,7 +140,34 @@ public class CircuitTracer {
 			{
 				for(TraceState states: bestPaths)
 				{
-					System.out.println(states);
+					System.out.println(states); // print out each bestpath
+				}
+			}
+			else if(args[1].equals("g"))
+			{
+				System.out.println("GUI mode not implemented");
+			}
+		}
+		else if(args[0].contains("q"))
+		{
+			Storage<TraceState> stateStore = Storage.getQueueInstance(); // configure storage as a queue
+			try {
+			CircuitBoard board = new CircuitBoard(args[2]); // create new board object with filename as parameter
+			search(stateStore, board); // perform search
+			}
+			catch (FileNotFoundException e)
+			{
+				System.out.println("Incorrect FilePath\n" + "e");
+			}
+			catch (InvalidFileFormatException e)
+			{
+				System.out.println(e);
+			}
+			if(args[1].contains("c"))
+			{
+				for(TraceState states: bestPaths)
+				{
+					System.out.println(states); // print out each state in bestPaths
 				}
 			}
 			else if(args[1].equals("g"))
@@ -158,11 +181,7 @@ public class CircuitTracer {
 		}
 		
 		
-		//TODO: initialize the Storage to use either a stack or queue
-		//TODO: read in the CircuitBoard from the given file
-		//TODO: run the search for best paths
-		//TODO: output results to console or GUI, according to specified choice
-
+	
 	}
 	
 } // class CircuitTracer
